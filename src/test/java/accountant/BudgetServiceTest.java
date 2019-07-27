@@ -99,4 +99,16 @@ public class BudgetServiceTest {
 
         budgetShouldBe(start, end, 0);
     }
+
+    @Test
+    public void test_cross_year() {
+        LocalDate start = LocalDate.of(2018, 12, 31);
+        LocalDate end = LocalDate.of(2019, 2, 1);
+
+        Budget budget = new Budget("201812", 310);
+        Budget budget1 = new Budget("201901", 310);
+        doReturn(Arrays.asList(budget, budget1)).when(budgetRepo).getAll();
+
+        budgetShouldBe(start, end, 320);
+    }
 }

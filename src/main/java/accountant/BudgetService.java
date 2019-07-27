@@ -3,6 +3,7 @@ package accountant;
 import accountant.vo.Budget;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 public class BudgetService {
@@ -54,6 +55,10 @@ public class BudgetService {
     }
 
     private int diffMonth(LocalDate start, LocalDate end) {
-        return Math.abs(start.getMonth().getValue() - end.getMonth().getValue());
+        if (start.getYear() == end.getYear()) {
+            return Math.abs(start.getMonth().getValue() - end.getMonth().getValue());
+        }
+        YearMonth from = YearMonth.from(start);
+        return YearMonth.from(end).minusMonths(from.getMonthValue()).getMonthValue();
     }
 }
