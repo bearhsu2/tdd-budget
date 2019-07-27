@@ -40,11 +40,11 @@ public class BudgetService {
         return 0;
     }
 
-    private double calculateBudgetAverage(LocalDate date) {
+    private double calculateBudgetAverage(LocalDate current) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
         for (Budget budget : this.budgetRepo.getAll()) {
-            if (budget.getYearMonth().equals(date.format(formatter))) {
-                return budget.getAmount() / date.lengthOfMonth();
+            if (budget.getYearMonth().equals(current.format(formatter))) {
+                return budget.getAmount() / current.lengthOfMonth();
             }
         }
         return 0D;
