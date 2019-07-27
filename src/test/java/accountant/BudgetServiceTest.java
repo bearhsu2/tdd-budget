@@ -75,4 +75,28 @@ public class BudgetServiceTest {
 
         budgetShouldBe(start, end, 590);
     }
+
+    @Test
+    public void test_cross_three_month() {
+        LocalDate start = LocalDate.of(2019, 1, 31);
+        LocalDate end = LocalDate.of(2019, 3, 3);
+
+        Budget budget = new Budget("201901", 310);
+        Budget budget1 = new Budget("201902", 280);
+        Budget budget2 = new Budget("201903", 310);
+        doReturn(Arrays.asList(budget, budget1, budget2)).when(budgetRepo).getAll();
+
+        budgetShouldBe(start, end, 320);
+    }
+
+    @Test
+    public void test_no_budget() {
+        LocalDate start = LocalDate.of(2019, 1, 31);
+        LocalDate end = LocalDate.of(2019, 3, 3);
+
+        Budget budget = new Budget("201904", 300);
+        doReturn(Arrays.asList(budget)).when(budgetRepo).getAll();
+
+        budgetShouldBe(start, end, 0);
+    }
 }
