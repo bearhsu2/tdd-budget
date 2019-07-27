@@ -62,4 +62,18 @@ public class BudgetServiceTest {
 
         assertEquals(150, result, 0.001);
     }
+
+    @Test
+    public void test_invalid_range() {
+        LocalDate start = LocalDate.of(2019, 1, 15);
+        LocalDate end = LocalDate.of(2019, 1, 1);
+
+        Budget budget = new Budget("201901", 310);
+        doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
+
+        BudgetService service = new BudgetService(budgetRepo);
+        double result = service.query(start, end);
+
+        assertEquals(0, result, 0.001);
+    }
 }

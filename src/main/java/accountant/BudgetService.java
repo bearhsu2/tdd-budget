@@ -11,6 +11,10 @@ public class BudgetService {
     }
 
     public double query(LocalDate start, LocalDate end) {
+        if (start.isAfter(end)) {
+            return 0;
+        }
+
         if (start.isEqual(end)) {
             return calculateBudgetAverage(start);
         }
@@ -28,7 +32,6 @@ public class BudgetService {
     }
 
     private int diffDay(LocalDate start, LocalDate end) {
-
         return end.getDayOfMonth() - start.getDayOfMonth() + 1;
     }
 
