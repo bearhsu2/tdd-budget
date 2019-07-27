@@ -13,26 +13,26 @@ import static org.mockito.Mockito.mock;
 
 
 public class BudgetServiceTest {
-    private BudgetRepo budgetRepo;
+    private BudgetRepo budgetRepo = mock(BudgetRepo.class);
+    private final BudgetService service = new BudgetService(budgetRepo);
 
     @Before
     public void setUp() throws Exception {
-        budgetRepo = mock(BudgetRepo.class);
     }
 
     @Test
     public void test_single_whole_month() {
-
         LocalDate start = LocalDate.of(2019, 1, 1);
         LocalDate end = LocalDate.of(2019, 1, 31);
 
         Budget budget = new Budget("201901", 3100);
         doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
 
-        BudgetService service = new BudgetService(budgetRepo);
-        double result = service.query(start, end);
+        budgetShouldBe(start, end, 3100);
+    }
 
-        assertEquals(3100, result, 0.001);
+    private void budgetShouldBe(LocalDate start, LocalDate end, int expected) {
+        assertEquals(expected, service.query(start, end), 0.001);
     }
 
     @Test
@@ -43,10 +43,7 @@ public class BudgetServiceTest {
         Budget budget = new Budget("201901", 310);
         doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
 
-        BudgetService service = new BudgetService(budgetRepo);
-        double result = service.query(start, end);
-
-        assertEquals(10, result, 0.001);
+        budgetShouldBe(start, end, 10);
     }
 
     @Test
@@ -57,10 +54,7 @@ public class BudgetServiceTest {
         Budget budget = new Budget("201901", 310);
         doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
 
-        BudgetService service = new BudgetService(budgetRepo);
-        double result = service.query(start, end);
-
-        assertEquals(150, result, 0.001);
+        budgetShouldBe(start, end, 150);
     }
 
     @Test
@@ -71,9 +65,6 @@ public class BudgetServiceTest {
         Budget budget = new Budget("201901", 310);
         doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
 
-        BudgetService service = new BudgetService(budgetRepo);
-        double result = service.query(start, end);
-
-        assertEquals(0, result, 0.001);
+        budgetShouldBe(start, end, 0);
     }
 }
