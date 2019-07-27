@@ -26,8 +26,7 @@ public class BudgetServiceTest {
         LocalDate start = LocalDate.of(2019, 1, 1);
         LocalDate end = LocalDate.of(2019, 1, 31);
 
-        Budget budget = new Budget("201901",3100);
-
+        Budget budget = new Budget("201901", 3100);
         doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
 
         BudgetService service = new BudgetService(budgetRepo);
@@ -41,12 +40,26 @@ public class BudgetServiceTest {
         LocalDate start = LocalDate.of(2019, 1, 1);
         LocalDate end = LocalDate.of(2019, 1, 1);
 
-        Budget budget = new Budget("201901",310);
-
+        Budget budget = new Budget("201901", 310);
         doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
+
         BudgetService service = new BudgetService(budgetRepo);
         double result = service.query(start, end);
 
         assertEquals(10, result, 0.001);
+    }
+
+    @Test
+    public void test_partial_month() {
+        LocalDate start = LocalDate.of(2019, 1, 1);
+        LocalDate end = LocalDate.of(2019, 1, 15);
+
+        Budget budget = new Budget("201901", 310);
+        doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
+
+        BudgetService service = new BudgetService(budgetRepo);
+        double result = service.query(start, end);
+
+        assertEquals(150, result, 0.001);
     }
 }
