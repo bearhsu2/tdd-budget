@@ -1,10 +1,10 @@
 package accountant;
 
 import accountant.vo.Budget;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
@@ -15,10 +15,6 @@ import static org.mockito.Mockito.mock;
 public class BudgetServiceTest {
     private BudgetRepo budgetRepo = mock(BudgetRepo.class);
     private final BudgetService service = new BudgetService(budgetRepo);
-
-    @Before
-    public void setUp() throws Exception {
-    }
 
     @Test
     public void test_single_whole_month() {
@@ -66,5 +62,17 @@ public class BudgetServiceTest {
         doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
 
         budgetShouldBe(start, end, 0);
+    }
+
+    @Test
+    public void test_cross_month() {
+        LocalDate start = LocalDate.of(2019, 1, 1);
+        LocalDate end = LocalDate.of(2019, 2, 28);
+
+        Budget budget = new Budget("201901", 310);
+        Budget budget1 = new Budget("201902", 280);
+        doReturn(Arrays.asList(budget, budget1)).when(budgetRepo).getAll();
+
+        budgetShouldBe(start, end, 590);
     }
 }
