@@ -21,9 +21,7 @@ public class BudgetService {
         }
 
         if (start.isEqual(end)) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-            Optional<Budget> budget = budgetRepo.getAll().stream()
-                    .filter(b -> b.getYearMonth().equals(start.format(formatter))).findFirst();
+            Optional<Budget> budget = getBudget(start);
             if (budget.isPresent()) {
                 return budget.get().getAmount() / start.lengthOfMonth();
             }
@@ -45,6 +43,12 @@ public class BudgetService {
             return partialBudget;
         }
         return 0;
+    }
+
+    private Optional<Budget> getBudget(LocalDate start) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+        return budgetRepo.getAll().stream()
+                .filter(b -> b.getYearMonth().equals(start.format(formatter))).findFirst();
     }
 
     private double calculateBudgetAverage(LocalDate current) {
