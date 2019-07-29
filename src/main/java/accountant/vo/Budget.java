@@ -25,4 +25,8 @@ public class Budget {
     public int dayCount() {
         return YearMonth.parse(getYearMonth(), ofPattern("uuuuMM")).lengthOfMonth();
     }
+
+    public double dailyAmount() {
+        return getAmount() / dayCount();
+    }
 }
