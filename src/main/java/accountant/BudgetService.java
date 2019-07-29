@@ -22,14 +22,6 @@ public class BudgetService {
             return 0;
         }
 
-        if (start.isEqual(end)) {
-            Optional<Budget> budget = getBudget(start);
-            if (budget.isPresent()) {
-                return budget.get().dailyAmount();
-            }
-            return 0;
-        }
-
         if (diffMonth(start, end) == 0) {
             Optional<Budget> budget = getBudget(start);
             if (budget.isPresent()) {
