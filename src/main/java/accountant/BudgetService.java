@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class BudgetService {
     private BudgetRepo budgetRepo;
@@ -61,8 +62,8 @@ public class BudgetService {
         return 0D;
     }
 
-    private int diffDay(LocalDate start, LocalDate end) {
-        return end.getDayOfMonth() - start.getDayOfMonth() + 1;
+    private long diffDay(LocalDate start, LocalDate end) {
+        return DAYS.between(start, end) + 1;
     }
 
     private int diffMonth(LocalDate start, LocalDate end) {
