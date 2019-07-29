@@ -32,13 +32,15 @@ public class BudgetService {
 
         int diffMonth = diffMonth(start, end);
         if (diffMonth > 0) {
-            double partialBudget = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1) +
-                    calculateBudgetAverage(end) * (end.getDayOfMonth());
+            double firstMonthAmount =
+                    calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
+            double lastMonthAmount = calculateBudgetAverage(end) * (end.getDayOfMonth());
+            double totalAmount = firstMonthAmount + lastMonthAmount;
             for (int i = 1; i < diffMonth; i++) {
                 LocalDate middle = start.plusMonths(i);
-                partialBudget += calculateBudgetAverage(middle) * middle.lengthOfMonth();
+                totalAmount += calculateBudgetAverage(middle) * middle.lengthOfMonth();
             }
-            return partialBudget;
+            return totalAmount;
         }
         return 0;
     }
@@ -46,7 +48,7 @@ public class BudgetService {
     private Optional<Budget> getBudget(LocalDate start) {
         DateTimeFormatter formatter = ofPattern("yyyyMM");
         return budgetRepo.getAll().stream()
-                .filter(b -> b.getYearMonth().equals(start.format(formatter))).findFirst();
+                         .filter(b -> b.getYearMonth().equals(start.format(formatter))).findFirst();
     }
 
     private double calculateBudgetAverage(LocalDate current) {
