@@ -25,9 +25,7 @@ public class BudgetService {
         if (start.isEqual(end)) {
             Optional<Budget> budget = getBudget(start);
             if (budget.isPresent()) {
-                int dayCount = budget.get().dayCount();
-                return budget.get().getAmount() / dayCount;
-//                return budget.get().getAmount() / start.lengthOfMonth();
+                return dailyAmount(budget);
             }
             return 0;
         }
@@ -47,6 +45,10 @@ public class BudgetService {
             return partialBudget;
         }
         return 0;
+    }
+
+    private double dailyAmount(Optional<Budget> budget) {
+        return budget.get().getAmount() / budget.get().dayCount();
     }
 
     private Optional<Budget> getBudget(LocalDate start) {
