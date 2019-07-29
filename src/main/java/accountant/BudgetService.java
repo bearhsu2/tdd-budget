@@ -7,6 +7,8 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
+
 public class BudgetService {
     private BudgetRepo budgetRepo;
 
@@ -23,7 +25,9 @@ public class BudgetService {
         if (start.isEqual(end)) {
             Optional<Budget> budget = getBudget(start);
             if (budget.isPresent()) {
-                return budget.get().getAmount() / start.lengthOfMonth();
+                int dayCount = budget.get().dayCount();
+                return budget.get().getAmount() / dayCount;
+//                return budget.get().getAmount() / start.lengthOfMonth();
             }
             return 0;
         }
@@ -46,13 +50,13 @@ public class BudgetService {
     }
 
     private Optional<Budget> getBudget(LocalDate start) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+        DateTimeFormatter formatter = ofPattern("yyyyMM");
         return budgetRepo.getAll().stream()
                 .filter(b -> b.getYearMonth().equals(start.format(formatter))).findFirst();
     }
 
     private double calculateBudgetAverage(LocalDate current) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+        DateTimeFormatter formatter = ofPattern("yyyyMM");
         for (Budget budget : this.budgetRepo.getAll()) {
             if (budget.getYearMonth().equals(current.format(formatter))) {
                 return budget.getAmount() / current.lengthOfMonth();
