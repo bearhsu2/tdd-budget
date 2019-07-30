@@ -31,8 +31,15 @@ public class BudgetService {
             }
         } else {
             int diffMonth = diffMonth(start, end);
-            double firstMonthAmount =
-                    calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
+
+            Optional<Budget> firstMonthBudget = getBudget(start);
+            
+            double firstMonthDailyAmount = 0D;
+            if (firstMonthBudget.isPresent()) {
+                firstMonthDailyAmount = firstMonthBudget.get().dailyAmount();
+            }
+//            double firstMonthDailyAmount = calculateBudgetAverage(start);
+            double firstMonthAmount = firstMonthDailyAmount * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
             totalAmount += firstMonthAmount;
             double lastMonthAmount = calculateBudgetAverage(end) * (end.getDayOfMonth());
             totalAmount += lastMonthAmount;
