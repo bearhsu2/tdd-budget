@@ -38,4 +38,8 @@ public class Budget {
     private YearMonth getMonth() {
         return YearMonth.parse(getYearMonth(), ofPattern("uuuuMM"));
     }
+
+    public LocalDate firstDay() {
+        return getMonth().atDay(1);
+    }
 }
