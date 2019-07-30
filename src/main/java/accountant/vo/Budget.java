@@ -1,5 +1,6 @@
 package accountant.vo;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
@@ -23,10 +24,18 @@ public class Budget {
     }
 
     public int dayCount() {
-        return YearMonth.parse(getYearMonth(), ofPattern("uuuuMM")).lengthOfMonth();
+        return getMonth().lengthOfMonth();
     }
 
     public double dailyAmount() {
         return getAmount() / dayCount();
+    }
+
+    public LocalDate lastDay() {
+        return getMonth().atEndOfMonth();
+    }
+
+    private YearMonth getMonth() {
+        return YearMonth.parse(getYearMonth(), ofPattern("uuuuMM"));
     }
 }
