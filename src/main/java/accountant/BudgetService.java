@@ -39,9 +39,9 @@ public class BudgetService {
                     Budget budget = currentBudget.get();
 
                     long dayCount;
-                    if (YearMonth.from(currentDate).equals(YearMonth.from(start))) {
+                    if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(start))) {
                         dayCount = dayCount(start, budget.lastDay());
-                    } else if (YearMonth.from(currentDate).equals(YearMonth.from(end))) {
+                    } else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(end))) {
                         dayCount = dayCount(budget.firstDay(), end);
                     } else {
                         dayCount = dayCount(budget.firstDay(), budget.lastDay());
