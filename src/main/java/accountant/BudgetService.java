@@ -38,20 +38,24 @@ public class BudgetService {
                 if (currentBudget.isPresent()) {
                     Budget budget = currentBudget.get();
 
-                    long dayCount;
-                    if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(start))) {
-                        dayCount = dayCount(start, budget.lastDay());
-                    } else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(end))) {
-                        dayCount = dayCount(budget.firstDay(), end);
-                    } else {
-                        dayCount = dayCount(budget.firstDay(), budget.lastDay());
-                    }
-                    totalAmount += budget.dailyAmount() * dayCount;
+                    totalAmount += budget.dailyAmount() * getOverlappingDays(start, end, budget);
                 }
                 currentDate = currentDate.plusMonths(1);
             }
         }
         return totalAmount;
+    }
+
+    private long getOverlappingDays(LocalDate start, LocalDate end, Budget budget) {
+        long dayCount;
+        if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(start))) {
+            dayCount = dayCount(start, budget.lastDay());
+        } else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(end))) {
+            dayCount = dayCount(budget.firstDay(), end);
+        } else {
+            dayCount = dayCount(budget.firstDay(), budget.lastDay());
+        }
+        return dayCount;
     }
 
     private Optional<Budget> getBudget(LocalDate start) {
