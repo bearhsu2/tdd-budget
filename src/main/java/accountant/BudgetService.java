@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 public class BudgetService {
     private BudgetRepo budgetRepo;
@@ -27,7 +26,7 @@ public class BudgetService {
         if (diffMonth(start, end) == 0) {
             Optional<Budget> budget = getBudget(start);
             if (budget.isPresent()) {
-                return budget.get().dailyAmount() * dayCount(start, end);
+                return budget.get().dailyAmount() * Period.dayCount(start, end);
             }
         } else {
 
@@ -38,7 +37,7 @@ public class BudgetService {
                 if (currentBudget.isPresent()) {
                     Budget budget = currentBudget.get();
 
-                    totalAmount += budget.dailyAmount() * getOverlappingDays(new Period(start, end), budget);
+                    totalAmount += budget.dailyAmount() * new Period(start, end).getOverlappingDays(budget);
                 }
                 currentDate = currentDate.plusMonths(1);
             }
@@ -46,26 +45,10 @@ public class BudgetService {
         return totalAmount;
     }
 
-    private long getOverlappingDays(Period period, Budget budget) {
-        long dayCount;
-        if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(period.getStart()))) {
-            dayCount = dayCount(period.getStart(), budget.lastDay());
-        } else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(period.getEnd()))) {
-            dayCount = dayCount(budget.firstDay(), period.getEnd());
-        } else {
-            dayCount = dayCount(budget.firstDay(), budget.lastDay());
-        }
-        return dayCount;
-    }
-
     private Optional<Budget> getBudget(LocalDate start) {
         DateTimeFormatter formatter = ofPattern("yyyyMM");
         return budgetRepo.getAll().stream()
                          .filter(b -> b.getYearMonth().equals(start.format(formatter))).findFirst();
-    }
-
-    private long dayCount(LocalDate start, LocalDate end) {
-        return DAYS.between(start, end) + 1;
     }
 
     private int diffMonth(LocalDate start, LocalDate end) {
