@@ -29,8 +29,7 @@ public class BudgetService {
             if (currentBudget.isPresent()) {
                 Budget budget = currentBudget.get();
 
-                totalAmount += budget.dailyAmount() * period
-                        .getOverlappingDays(budget.getPeriod());
+                totalAmount += budget.getOverlappingAmount(period);
             }
             currentDate = currentDate.plusMonths(1);
         }
@@ -43,11 +42,4 @@ public class BudgetService {
                          .filter(b -> b.getYearMonth().equals(start.format(formatter))).findFirst();
     }
 
-    private int diffMonth(LocalDate start, LocalDate end) {
-        if (start.getYear() == end.getYear()) {
-            return Math.abs(start.getMonth().getValue() - end.getMonth().getValue());
-        }
-        YearMonth from = YearMonth.from(start);
-        return YearMonth.from(end).minusMonths(from.getMonthValue()).getMonthValue();
-    }
 }

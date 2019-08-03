@@ -43,7 +43,11 @@ class Budget {
         return getMonth().atDay(1);
     }
 
-    Period getPeriod() {
+    private Period getPeriod() {
         return new Period(firstDay(), lastDay());
+    }
+
+    double getOverlappingAmount(Period period) {
+        return dailyAmount() * period.getOverlappingDays(getPeriod());
     }
 }
