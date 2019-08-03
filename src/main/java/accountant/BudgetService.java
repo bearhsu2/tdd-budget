@@ -21,6 +21,7 @@ public class BudgetService {
         }
 
         double totalAmount = 0;
+        Period period = new Period(start, end);
         LocalDate currentDate = start;
         while (currentDate.isBefore(YearMonth.from(end).plusMonths(1).atDay(1))) {
             Optional<Budget> currentBudget = getBudget(currentDate);
@@ -28,7 +29,7 @@ public class BudgetService {
             if (currentBudget.isPresent()) {
                 Budget budget = currentBudget.get();
 
-                totalAmount += budget.dailyAmount() * new Period(start, end)
+                totalAmount += budget.dailyAmount() * period
                         .getOverlappingDays(budget.getPeriod());
             }
             currentDate = currentDate.plusMonths(1);
