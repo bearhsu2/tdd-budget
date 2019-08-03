@@ -29,16 +29,16 @@ class Period {
     }
 
     long getOverlappingDays(Budget budget) {
-        LocalDate overLappingStart;
+        LocalDate overLappingStart = start.isAfter(budget.firstDay()) ? start : budget.firstDay();
         LocalDate overLappingEnd;
         if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(getStart()))) {
-            overLappingStart = getStart();
+//            overLappingStart = getStart();
             overLappingEnd = budget.lastDay();
         } else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(getEnd()))) {
-            overLappingStart = budget.firstDay();
+//            overLappingStart = budget.firstDay();
             overLappingEnd = getEnd();
         } else {
-            overLappingStart = budget.firstDay();
+//            overLappingStart = budget.firstDay();
             overLappingEnd = budget.lastDay();
         }
         return dayCount(overLappingStart, overLappingEnd);
