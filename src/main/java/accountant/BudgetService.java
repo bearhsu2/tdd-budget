@@ -1,7 +1,6 @@
 package accountant;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -23,16 +22,18 @@ public class BudgetService {
         double totalAmount = 0;
         Period period = new Period(start, end);
         LocalDate currentDate = start;
-        while (currentDate.isBefore(YearMonth.from(end).plusMonths(1).atDay(1))) {
-            Optional<Budget> currentBudget = getBudget(currentDate);
-
-            if (currentBudget.isPresent()) {
-                Budget budget = currentBudget.get();
-
-                totalAmount += budget.getOverlappingAmount(period);
-            }
-            currentDate = currentDate.plusMonths(1);
+//        while (currentDate.isBefore(YearMonth.from(end).plusMonths(1).atDay(1))) {
+//            Optional<Budget> currentBudget = getBudget(currentDate);
+//
+//            if (currentBudget.isPresent()) {
+//                Budget budget = currentBudget.get();
+//
+        for (Budget budget : budgetRepo.getAll()) {
+            totalAmount += budget.getOverlappingAmount(period);
         }
+//            }
+//            currentDate = currentDate.plusMonths(1);
+//        }
         return totalAmount;
     }
 
