@@ -26,12 +26,16 @@ class Period {
     }
 
     long getOverlappingDays(Period another) {
-        if (end.isBefore(another.start) || start.isAfter(another.end)) {
+        if (hasNoOverlapping(another)) {
             return 0;
         }
 
         LocalDate overLappingStart = start.isAfter(another.getStart()) ? start : another.getStart();
         LocalDate overLappingEnd = end.isBefore(another.getEnd()) ? end : another.getEnd();
         return dayCount(overLappingStart, overLappingEnd);
+    }
+
+    private boolean hasNoOverlapping(Period another) {
+        return end.isBefore(another.start) || start.isAfter(another.end);
     }
 }
