@@ -21,25 +21,17 @@ public class BudgetService {
         }
 
         double totalAmount = 0;
-        if (diffMonth(start, end) == 0) {
-            Optional<Budget> budget = getBudget(start);
-            if (budget.isPresent()) {
-                return budget.get().dailyAmount() * Period.dayCount(start, end);
+        LocalDate currentDate = start;
+        while (currentDate.isBefore(YearMonth.from(end).plusMonths(1).atDay(1))) {
+            Optional<Budget> currentBudget = getBudget(currentDate);
+
+            if (currentBudget.isPresent()) {
+                Budget budget = currentBudget.get();
+
+                totalAmount += budget.dailyAmount() * new Period(start, end)
+                        .getOverlappingDays(budget.getPeriod());
             }
-        } else {
-
-            LocalDate currentDate = start;
-            while (currentDate.isBefore(YearMonth.from(end).plusMonths(1).atDay(1))) {
-                Optional<Budget> currentBudget = getBudget(currentDate);
-
-                if (currentBudget.isPresent()) {
-                    Budget budget = currentBudget.get();
-
-                    totalAmount += budget.dailyAmount() * new Period(start, end)
-                            .getOverlappingDays(budget.getPeriod());
-                }
-                currentDate = currentDate.plusMonths(1);
-            }
+            currentDate = currentDate.plusMonths(1);
         }
         return totalAmount;
     }
