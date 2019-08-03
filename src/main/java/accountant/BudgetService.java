@@ -1,7 +1,5 @@
 package accountant;
 
-import accountant.vo.Budget;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -38,7 +36,7 @@ public class BudgetService {
                     Budget budget = currentBudget.get();
 
                     totalAmount += budget.dailyAmount() * new Period(start, end)
-                            .getOverlappingDays(new Period(budget.firstDay(), budget.lastDay()));
+                            .getOverlappingDays(budget.getPeriod());
                 }
                 currentDate = currentDate.plusMonths(1);
             }

@@ -1,37 +1,37 @@
-package accountant.vo;
+package accountant;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 
-public class Budget {
-    public String yearMonth;
-    public int amount;
+class Budget {
+    private String yearMonth;
+    private int amount;
 
-    public Budget(String yearMonth, int amount) {
+    Budget(String yearMonth, int amount) {
         this.yearMonth = yearMonth;
         this.amount = amount;
     }
 
-    public String getYearMonth() {
+    String getYearMonth() {
         return yearMonth;
     }
 
 
-    public int getAmount() {
+    private int getAmount() {
         return amount;
     }
 
-    public int dayCount() {
+    private int dayCount() {
         return getMonth().lengthOfMonth();
     }
 
-    public double dailyAmount() {
+    double dailyAmount() {
         return getAmount() / dayCount();
     }
 
-    public LocalDate lastDay() {
+    private LocalDate lastDay() {
         return getMonth().atEndOfMonth();
     }
 
@@ -39,7 +39,11 @@ public class Budget {
         return YearMonth.parse(getYearMonth(), ofPattern("uuuuMM"));
     }
 
-    public LocalDate firstDay() {
+    private LocalDate firstDay() {
         return getMonth().atDay(1);
+    }
+
+    Period getPeriod() {
+        return new Period(firstDay(), lastDay());
     }
 }
