@@ -3,7 +3,6 @@ package accountant;
 import accountant.vo.Budget;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -31,16 +30,6 @@ class Period {
     long getOverlappingDays(Budget budget) {
         LocalDate overLappingStart = start.isAfter(budget.firstDay()) ? start : budget.firstDay();
         LocalDate overLappingEnd = end.isBefore(budget.lastDay()) ? end : budget.lastDay();
-        if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(getStart()))) {
-//            overLappingStart = getStart();
-//            overLappingEnd = budget.lastDay();
-        } else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(getEnd()))) {
-//            overLappingStart = budget.firstDay();
-//            overLappingEnd = getEnd();
-        } else {
-//            overLappingStart = budget.firstDay();
-//            overLappingEnd = budget.lastDay();
-        }
         return dayCount(overLappingStart, overLappingEnd);
     }
 }

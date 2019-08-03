@@ -119,4 +119,26 @@ public class BudgetServiceTest {
 
         budgetShouldBe(start, end, 320);
     }
+
+    @Test
+    public void period_without_overlapping_before_budget() {
+        LocalDate start = prepareLocalDate(2018, 12, 31);
+        LocalDate end = prepareLocalDate(2019, 2, 1);
+
+        Budget budget = createBudget("201903", 310);
+        doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
+
+        budgetShouldBe(start, end, 0);
+    }
+
+    @Test
+    public void period_without_overlapping_after_budget() {
+        LocalDate start = prepareLocalDate(2019, 10, 31);
+        LocalDate end = prepareLocalDate(2019, 10, 1);
+
+        Budget budget = createBudget("201903", 310);
+        doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
+
+        budgetShouldBe(start, end, 0);
+    }
 }
