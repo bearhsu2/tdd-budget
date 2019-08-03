@@ -14,21 +14,16 @@ class Budget {
         this.amount = amount;
     }
 
-    String getYearMonth() {
+    private String getYearMonth() {
         return yearMonth;
-    }
-
-
-    private int getAmount() {
-        return amount;
     }
 
     private int dayCount() {
         return getMonth().lengthOfMonth();
     }
 
-    double dailyAmount() {
-        return getAmount() / dayCount();
+    private double dailyAmount() {
+        return amount / dayCount();
     }
 
     private LocalDate lastDay() {
