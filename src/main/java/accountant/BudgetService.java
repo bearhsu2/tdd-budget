@@ -20,11 +20,12 @@ public class BudgetService {
             return 0;
         }
 
+        Period period = new Period(start, end);
+
         // find budget
         // find budget daily amount
         // find overlapping days
         // get daily amount * overlapping days
-
         double total = 0D;
         int diffMonth = diffMonth(start, end);
         if (diffMonth == 0) {
@@ -34,7 +35,7 @@ public class BudgetService {
             if (budgetOpt.isPresent()) {
                 Budget budget = budgetOpt.get();
 
-                total += budget.getOverlappingAmount(new Period(start, end));
+                total += budget.getOverlappingAmount(period);
             }
 
         } else {
@@ -44,7 +45,7 @@ public class BudgetService {
             if (firstBudgetOpt.isPresent()) {
                 Budget budget = firstBudgetOpt.get();
 
-                total += budget.getOverlappingAmount(new Period(start, end));
+                total += budget.getOverlappingAmount(period);
             }
 
 
@@ -53,13 +54,23 @@ public class BudgetService {
             if (lastBudgetOpt.isPresent()) {
                 Budget budget = lastBudgetOpt.get();
 
-                total += budget.getOverlappingAmount(new Period(start, end));
+                total += budget.getOverlappingAmount(period);
             }
 
 
             for (int i = 1; i < diffMonth; i++) {
+
                 LocalDate middle = start.plusMonths(i);
-                total += calculateBudgetAverage(middle) * middle.lengthOfMonth();
+
+
+                Optional<Budget> middleBudgetOpt = findBudget(middle);
+                if (middleBudgetOpt.isPresent()) {
+                    Budget budget = middleBudgetOpt.get();
+
+                    total += budget.getOverlappingAmount(period);
+                }
+
+
             }
 
         }
