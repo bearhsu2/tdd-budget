@@ -42,8 +42,10 @@ public class BudgetService {
             }
 
         } else {
-            double partialBudget = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1) +
-                    calculateBudgetAverage(end) * (end.getDayOfMonth());
+            double firstMonthBudget = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
+            double lastMonthBudget = calculateBudgetAverage(end) * (end.getDayOfMonth());
+
+            double partialBudget = firstMonthBudget + lastMonthBudget;
             for (int i = 1; i < diffMonth; i++) {
                 LocalDate middle = start.plusMonths(i);
                 partialBudget += calculateBudgetAverage(middle) * middle.lengthOfMonth();
