@@ -26,7 +26,7 @@ public class BudgetService {
         // get daily amount * overlapping days
         if (start.isEqual(end)) {
 
-            Optional<Budget> budgetOpt = getBudget(start);
+            Optional<Budget> budgetOpt = findBudget(start);
 
             if (budgetOpt.isPresent()) {
                 return budgetOpt.get().getAmount() / start.lengthOfMonth();
@@ -52,7 +52,7 @@ public class BudgetService {
         return 0;
     }
 
-    private Optional<Budget> getBudget(LocalDate targetDate) {
+    private Optional<Budget> findBudget(LocalDate targetDate) {
         return this.budgetRepo.getAll()
                         .stream()
                         .filter(budget -> budget.matchesDate(targetDate))
