@@ -27,10 +27,9 @@ public class BudgetService {
         // find overlapping days
         // get daily amount * overlapping days
         double total = 0D;
-        int diffMonth = diffMonth(start, end);
 
 
-        for (int i = 0; i <= diffMonth; i++) {
+        for (int i = 0; i <= diffMonth(start, end); i++) {
 
             LocalDate middle = start.plusMonths(i);
 
@@ -41,10 +40,9 @@ public class BudgetService {
                 total += budget.getOverlappingAmount(period);
             }
 
-
         }
 
-        
+
         return total;
 
     }
@@ -56,15 +54,7 @@ public class BudgetService {
                 .findFirst();
     }
 
-    private double calculateBudgetAverage(LocalDate current) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-        for (Budget budget : this.budgetRepo.getAll()) {
-            if (budget.getYearMonth().equals(current.format(formatter))) {
-                return budget.getAmount() / current.lengthOfMonth();
-            }
-        }
-        return 0D;
-    }
+  
 
     private int diffMonth(LocalDate start, LocalDate end) {
 
