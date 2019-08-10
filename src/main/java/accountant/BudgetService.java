@@ -29,7 +29,7 @@ public class BudgetService {
             Optional<Budget> budgetOpt = findBudget(start);
 
             if (budgetOpt.isPresent()) {
-                return budgetOpt.get().getAmount() / start.lengthOfMonth();
+                return budgetOpt.get().getAmount() / start.lengthOfMonth() * diffDay(start, end);
             } else {
                 return 0D;
             }
