@@ -15,11 +15,11 @@ public class Period {
         this.end = end;
     }
 
-    public LocalDate getStart() {
+    private LocalDate getStart() {
         return start;
     }
 
-    public LocalDate getEnd() {
+    private LocalDate getEnd() {
         return end;
     }
 
