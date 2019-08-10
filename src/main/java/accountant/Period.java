@@ -42,9 +42,5 @@ public class Period {
         return DAYS.between(head, tail) + 1;
     }
 
-    long diffMonth() {
-
-        return MONTHS.between(YearMonth.from(start), YearMonth.from(end));
-
-    }
+ 
 }
