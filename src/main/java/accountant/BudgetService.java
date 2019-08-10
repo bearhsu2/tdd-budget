@@ -27,7 +27,8 @@ public class BudgetService {
         // find overlapping days
         // get daily amount * overlapping days
 
-        if (diffMonth(start, end) == 0) {
+        int diffMonth = diffMonth(start, end);
+        if (diffMonth == 0) {
 
             Optional<Budget> budgetOpt = findBudget(start);
 
@@ -35,15 +36,12 @@ public class BudgetService {
                 double dailyAmount = budgetOpt.get().getDailyAmount();
                 long overlappingDays = overlappingDays(start, end);
 
-                return (dailyAmount) * overlappingDays;
+                return dailyAmount * overlappingDays;
             } else {
                 return 0D;
             }
 
-        }
-
-        int diffMonth = diffMonth(start, end);
-        if (diffMonth > 0) {
+        } else {
             double partialBudget = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1) +
                     calculateBudgetAverage(end) * (end.getDayOfMonth());
             for (int i = 1; i < diffMonth; i++) {
@@ -52,14 +50,14 @@ public class BudgetService {
             }
             return partialBudget;
         }
-        return 0;
+
     }
 
     private Optional<Budget> findBudget(LocalDate targetDate) {
         return this.budgetRepo.getAll()
-                        .stream()
-                        .filter(budget -> budget.matchesDate(targetDate))
-                        .findFirst();
+                .stream()
+                .filter(budget -> budget.matchesDate(targetDate))
+                .findFirst();
     }
 
     private double calculateBudgetAverage(LocalDate current) {
@@ -77,7 +75,6 @@ public class BudgetService {
     }
 
     private int diffMonth(LocalDate start, LocalDate end) {
-
 
 
         if (start.getYear() == end.getYear()) {
