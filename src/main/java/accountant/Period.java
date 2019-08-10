@@ -25,6 +25,12 @@ public class Period {
 
     public long overlappingDays(Period another) {
 
+        if (this.end.isBefore(another.getStart())
+                || this.start.isAfter(another.getEnd())) {
+            return 0L;
+        }
+
+      
         LocalDate head = getStart().isAfter(another.getStart())
                 ? getStart()
                 : another.getStart();

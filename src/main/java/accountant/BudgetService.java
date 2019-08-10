@@ -3,6 +3,7 @@ package accountant;
 import accountant.vo.Budget;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class BudgetService {
@@ -20,25 +21,36 @@ public class BudgetService {
 
         Period period = new Period(start, end);
 
+
+        List<Budget> budgets = this.budgetRepo.getAll();
+
+        double total = 0D;
+        for (Budget budget : budgets) {
+
+            total+= budget.getOverlappingAmount(period);
+
+        }
+
+        return total;
+
         // find budget
         // find budget daily amount
         // find overlapping days
         // get daily amount * overlapping days
-        double total = 0D;
-
-        for (int i = 0; i <= period.diffMonth(); i++) {
-            LocalDate middle = start.plusMonths(i);
-
-            Optional<Budget> middleBudgetOpt = findBudget(middle);
-
-            total+= middleBudgetOpt
-                    .map(budget -> budget.getOverlappingAmount(period))
-                    .orElse(0D);
-            
-        }
-
-
-        return total;
+//        double total = 0D;
+//
+//        for (int i = 0; i <= period.diffMonth(); i++) {
+//            LocalDate middle = start.plusMonths(i);
+//
+//            Optional<Budget> middleBudgetOpt = findBudget(middle);
+//
+//            total+= middleBudgetOpt
+//                    .map(budget -> budget.getOverlappingAmount(period))
+//                    .orElse(0D);
+//
+//        }
+//
+//        return total;
 
     }
 
