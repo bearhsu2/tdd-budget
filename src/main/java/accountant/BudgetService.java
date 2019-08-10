@@ -71,9 +71,8 @@ public class BudgetService {
 
     private double getTotal(Budget budget, Period period) {
 
-
         double dailyAmount = budget.getDailyAmount();
-        long overlappingDays = overlappingDays(period, budget);
+        long overlappingDays = overlappingDays(period, new Period(budget.firstDay(), budget.lastDay()));
         return dailyAmount * overlappingDays;
     }
 
@@ -94,15 +93,15 @@ public class BudgetService {
         return 0D;
     }
 
-    private long overlappingDays(Period period, Budget budget) {
+    private long overlappingDays(Period period, Period budgetPeriod) {
 
-        LocalDate head = period.getStart().isAfter(budget.firstDay())
+        LocalDate head = period.getStart().isAfter(budgetPeriod.getStart())
                 ? period.getStart()
-                : budget.firstDay();
+                : budgetPeriod.getStart();
 
-        LocalDate tail = period.getEnd().isBefore(budget.lastDay())
+        LocalDate tail = period.getEnd().isBefore(budgetPeriod.getEnd())
                 ? period.getEnd()
-                : budget.lastDay();
+                : budgetPeriod.getEnd();
 
         return DAYS.between(head, tail) + 1;
     }
