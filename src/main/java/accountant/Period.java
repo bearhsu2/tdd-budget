@@ -1,8 +1,10 @@
 package accountant;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.MONTHS;
 
 public class Period {
     private final LocalDate start;
@@ -32,5 +34,11 @@ public class Period {
                 : another.getEnd();
 
         return DAYS.between(head, tail) + 1;
+    }
+
+    long diffMonth() {
+
+        return MONTHS.between(YearMonth.from(start), YearMonth.from(end));
+
     }
 }

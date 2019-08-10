@@ -3,10 +3,7 @@ package accountant;
 import accountant.vo.Budget;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.Optional;
-
-import static java.time.temporal.ChronoUnit.MONTHS;
 
 public class BudgetService {
     private BudgetRepo budgetRepo;
@@ -29,7 +26,7 @@ public class BudgetService {
         // get daily amount * overlapping days
         double total = 0D;
 
-        for (int i = 0; i <= diffMonth(period); i++) {
+        for (int i = 0; i <= period.diffMonth(); i++) {
             LocalDate middle = start.plusMonths(i);
 
             Optional<Budget> middleBudgetOpt = findBudget(middle);
@@ -54,10 +51,4 @@ public class BudgetService {
     }
 
 
-
-    private long diffMonth(Period period) {
-
-        return MONTHS.between(YearMonth.from(period.getStart()), YearMonth.from(period.getEnd()));
-
-    }
 }
