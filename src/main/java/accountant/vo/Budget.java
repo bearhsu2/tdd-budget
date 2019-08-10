@@ -1,6 +1,7 @@
 package accountant.vo;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
@@ -28,4 +29,12 @@ public class Budget {
                 .equals(YearMonth.from(targetDate));
     }
 
+    public int lengthOfMonth() {
+        return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("uuuuMM")).lengthOfMonth();
+    }
+
+    public int getDailyAmount() {
+
+        return amount / lengthOfMonth();
+    }
 }

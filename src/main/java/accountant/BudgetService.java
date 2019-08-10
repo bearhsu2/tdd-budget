@@ -30,7 +30,7 @@ public class BudgetService {
             Optional<Budget> budgetOpt = findBudget(start);
 
             if (budgetOpt.isPresent()) {
-                int dailyAmount = getDailyAmount(start, budgetOpt.get());
+                int dailyAmount = budgetOpt.get().getDailyAmount();
                 int overlappingDays = diffDay(start, end);
 
                 return (dailyAmount) * overlappingDays;
@@ -51,11 +51,6 @@ public class BudgetService {
             return partialBudget;
         }
         return 0;
-    }
-
-    private int getDailyAmount(LocalDate start, Budget budget) {
-
-        return budget.getAmount() / start.lengthOfMonth();
     }
 
     private Optional<Budget> findBudget(LocalDate targetDate) {
