@@ -7,6 +7,8 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class BudgetService {
     private BudgetRepo budgetRepo;
 
@@ -30,8 +32,8 @@ public class BudgetService {
             Optional<Budget> budgetOpt = findBudget(start);
 
             if (budgetOpt.isPresent()) {
-                int dailyAmount = budgetOpt.get().getDailyAmount();
-                int overlappingDays = diffDay(start, end);
+                double dailyAmount = budgetOpt.get().getDailyAmount();
+                long overlappingDays = overlappingDays(start, end);
 
                 return (dailyAmount) * overlappingDays;
             } else {
@@ -70,11 +72,14 @@ public class BudgetService {
         return 0D;
     }
 
-    private int diffDay(LocalDate start, LocalDate end) {
-        return end.getDayOfMonth() - start.getDayOfMonth() + 1;
+    private long overlappingDays(LocalDate start, LocalDate end) {
+        return DAYS.between(start, end) + 1;
     }
 
     private int diffMonth(LocalDate start, LocalDate end) {
+
+
+
         if (start.getYear() == end.getYear()) {
             return Math.abs(start.getMonth().getValue() - end.getMonth().getValue());
         }
