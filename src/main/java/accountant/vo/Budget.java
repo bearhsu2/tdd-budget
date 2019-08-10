@@ -1,5 +1,7 @@
 package accountant.vo;
 
+import accountant.Period;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -43,5 +45,9 @@ public class Budget {
 
     public LocalDate firstDay() {
         return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("uuuuMM")).atDay(1);
+    }
+
+    public Period toPeriod() {
+        return new Period(firstDay(), lastDay());
     }
 }

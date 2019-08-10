@@ -70,7 +70,7 @@ public class BudgetService {
     private double getTotal(Budget budget, Period period) {
 
         double dailyAmount = budget.getDailyAmount();
-        long overlappingDays = period.overlappingDays(new Period(budget.firstDay(), budget.lastDay()));
+        long overlappingDays = period.overlappingDays(budget.toPeriod());
         return dailyAmount * overlappingDays;
     }
 
