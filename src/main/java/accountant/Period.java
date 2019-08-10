@@ -30,7 +30,7 @@ public class Period {
             return 0L;
         }
 
-      
+
         LocalDate head = getStart().isAfter(another.getStart())
                 ? getStart()
                 : another.getStart();
