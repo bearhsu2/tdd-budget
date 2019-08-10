@@ -34,9 +34,10 @@ public class BudgetService {
             Optional<Budget> budgetOpt = findBudget(start);
 
             if (budgetOpt.isPresent()) {
-                double dailyAmount = budgetOpt.get().getDailyAmount();
-                long overlappingDays = overlappingDays(start, end);
+                Budget budget = budgetOpt.get();
 
+                double dailyAmount = budget.getDailyAmount();
+                long overlappingDays = overlappingDays(start, end);
                 total += dailyAmount * overlappingDays;
             }
 
@@ -45,12 +46,15 @@ public class BudgetService {
             // first month
             Optional<Budget> budgetOpt = findBudget(start);
             if (budgetOpt.isPresent()) {
-                double dailyAmount = budgetOpt.get().getDailyAmount();
-                long overlappingDays = overlappingDays(start, budgetOpt.get().lastDay());
+                Budget budget = budgetOpt.get();
 
+                double dailyAmount = budget.getDailyAmount();
+                long overlappingDays = overlappingDays(start, budget.lastDay());
                 total += dailyAmount * overlappingDays;
             }
-            
+
+
+
             double lastMonthBudget = calculateBudgetAverage(end) * (end.getDayOfMonth());
             total += lastMonthBudget;
 
