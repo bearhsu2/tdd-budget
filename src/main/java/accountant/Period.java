@@ -2,6 +2,8 @@ package accountant;
 
 import java.time.LocalDate;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class Period {
     private final LocalDate start;
     private final LocalDate end;
@@ -17,5 +19,18 @@ public class Period {
 
     public LocalDate getEnd() {
         return end;
+    }
+
+    long overlappingDays(Period another) {
+
+        LocalDate head = getStart().isAfter(another.getStart())
+                ? getStart()
+                : another.getStart();
+
+        LocalDate tail = getEnd().isBefore(another.getEnd())
+                ? getEnd()
+                : another.getEnd();
+
+        return DAYS.between(head, tail) + 1;
     }
 }

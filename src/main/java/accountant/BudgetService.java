@@ -7,8 +7,6 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-
 public class BudgetService {
     private BudgetRepo budgetRepo;
 
@@ -72,7 +70,7 @@ public class BudgetService {
     private double getTotal(Budget budget, Period period) {
 
         double dailyAmount = budget.getDailyAmount();
-        long overlappingDays = overlappingDays(period, new Period(budget.firstDay(), budget.lastDay()));
+        long overlappingDays = period.overlappingDays(new Period(budget.firstDay(), budget.lastDay()));
         return dailyAmount * overlappingDays;
     }
 
@@ -91,19 +89,6 @@ public class BudgetService {
             }
         }
         return 0D;
-    }
-
-    private long overlappingDays(Period period, Period budgetPeriod) {
-
-        LocalDate head = period.getStart().isAfter(budgetPeriod.getStart())
-                ? period.getStart()
-                : budgetPeriod.getStart();
-
-        LocalDate tail = period.getEnd().isBefore(budgetPeriod.getEnd())
-                ? period.getEnd()
-                : budgetPeriod.getEnd();
-
-        return DAYS.between(head, tail) + 1;
     }
 
     private int diffMonth(LocalDate start, LocalDate end) {
