@@ -33,9 +33,9 @@ public class BudgetService {
 
             if (budgetOpt.isPresent()) {
                 return budgetOpt.get().getAmount() / start.lengthOfMonth();
+            } else {
+                return 0D;
             }
-
-            return 0D;
         }
 
         if (diffMonth(start, end) == 0) {
