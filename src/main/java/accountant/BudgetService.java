@@ -24,13 +24,16 @@ public class BudgetService {
         // find budget daily amount
         // find overlapping days
         // get daily amount * overlapping days
-       
+
         if (diffMonth(start, end) == 0) {
 
             Optional<Budget> budgetOpt = findBudget(start);
 
             if (budgetOpt.isPresent()) {
-                return budgetOpt.get().getAmount() / start.lengthOfMonth() * diffDay(start, end);
+                int dailyAmount = budgetOpt.get().getAmount() / start.lengthOfMonth();
+                int overlappingDays = diffDay(start, end);
+
+                return (dailyAmount) * overlappingDays;
             } else {
                 return 0D;
             }
