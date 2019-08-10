@@ -1,5 +1,9 @@
 package accountant.vo;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+
 public class Budget {
     public String yearMonth;
     public int amount;
@@ -17,4 +21,11 @@ public class Budget {
     public int getAmount() {
         return amount;
     }
+
+    public boolean matchesDate(LocalDate targetDate) {
+
+        return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("uuuuMM"))
+                .equals(YearMonth.from(targetDate));
+    }
+
 }
