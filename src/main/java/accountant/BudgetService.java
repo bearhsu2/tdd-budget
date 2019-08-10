@@ -19,24 +19,12 @@ public class BudgetService {
             return 0;
         }
 
-        Period period = new Period(start, end);
-
-
-        List<Budget> budgets = this.budgetRepo.getAll();
-
-        return budgets
+        return this.budgetRepo.getAll()
                 .stream()
-                .mapToDouble(budget -> budget.getOverlappingAmount(period))
+                .mapToDouble(budget -> budget.getOverlappingAmount(new Period(start, end)))
                 .sum();
 
 
-    }
-
-    private Optional<Budget> findBudget(LocalDate targetDate) {
-        return this.budgetRepo.getAll()
-                .stream()
-                .filter(budget -> budget.matchesDate(targetDate))
-                .findFirst();
     }
 
 
