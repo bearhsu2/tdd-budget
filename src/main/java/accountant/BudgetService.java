@@ -36,7 +36,7 @@ public class BudgetService {
             if (budgetOpt.isPresent()) {
                 Budget budget = budgetOpt.get();
 
-                total += getTotal(start, end, budget);
+                total += getTotal(budget, new Period(start, end));
             }
 
         } else {
@@ -46,7 +46,7 @@ public class BudgetService {
             if (firstBudgetOpt.isPresent()) {
                 Budget budget = firstBudgetOpt.get();
 
-                total += getTotal(start, end, budget);
+                total += getTotal(budget, new Period(start, end));
             }
 
 
@@ -55,7 +55,7 @@ public class BudgetService {
             if (lastBudgetOpt.isPresent()) {
                 Budget budget = lastBudgetOpt.get();
 
-                total += getTotal(start, end, budget);
+                total += getTotal(budget, new Period(start, end));
             }
 
 
@@ -69,9 +69,11 @@ public class BudgetService {
 
     }
 
-    private double getTotal(LocalDate start, LocalDate end, Budget budget) {
+    private double getTotal(Budget budget, Period period) {
+
+
         double dailyAmount = budget.getDailyAmount();
-        long overlappingDays = overlappingDays(start, end, budget);
+        long overlappingDays = overlappingDays(period, budget);
         return dailyAmount * overlappingDays;
     }
 
@@ -92,13 +94,14 @@ public class BudgetService {
         return 0D;
     }
 
-    private long overlappingDays(LocalDate start, LocalDate end, Budget budget) {
-        LocalDate head = start.isAfter(budget.firstDay())
-                ? start
+    private long overlappingDays(Period period, Budget budget) {
+
+        LocalDate head = period.getStart().isAfter(budget.firstDay())
+                ? period.getStart()
                 : budget.firstDay();
 
-        LocalDate tail = end.isBefore(budget.lastDay())
-                ? end
+        LocalDate tail = period.getEnd().isBefore(budget.lastDay())
+                ? period.getEnd()
                 : budget.lastDay();
 
         return DAYS.between(head, tail) + 1;
