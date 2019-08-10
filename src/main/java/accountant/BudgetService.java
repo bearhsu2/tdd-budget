@@ -36,9 +36,7 @@ public class BudgetService {
             if (budgetOpt.isPresent()) {
                 Budget budget = budgetOpt.get();
 
-                double dailyAmount = budget.getDailyAmount();
-                long overlappingDays = overlappingDays(start, end);
-                total += dailyAmount * overlappingDays;
+                total += getTotal(start, end, budget);
             }
 
         } else {
@@ -48,9 +46,7 @@ public class BudgetService {
             if (firstBudgetOpt.isPresent()) {
                 Budget budget = firstBudgetOpt.get();
 
-                double dailyAmount = budget.getDailyAmount();
-                long overlappingDays = overlappingDays(start, budget.lastDay());
-                total += dailyAmount * overlappingDays;
+                total += getTotal(start, end, budget);
             }
 
 
@@ -59,9 +55,7 @@ public class BudgetService {
             if (lastBudgetOpt.isPresent()) {
                 Budget budget = lastBudgetOpt.get();
 
-                double dailyAmount = budget.getDailyAmount();
-                long overlappingDays = overlappingDays(budget.firstDay(), end);
-                total += dailyAmount * overlappingDays;
+                total += getTotal(start, end, budget);
             }
 
 
@@ -73,6 +67,12 @@ public class BudgetService {
         }
         return total;
 
+    }
+
+    private double getTotal(LocalDate start, LocalDate end, Budget budget) {
+        double dailyAmount = budget.getDailyAmount();
+        long overlappingDays = overlappingDays(start, end, budget);
+        return dailyAmount * overlappingDays;
     }
 
     private Optional<Budget> findBudget(LocalDate targetDate) {
@@ -92,8 +92,16 @@ public class BudgetService {
         return 0D;
     }
 
-    private long overlappingDays(LocalDate start, LocalDate end) {
-        return DAYS.between(start, end) + 1;
+    private long overlappingDays(LocalDate start, LocalDate end, Budget budget) {
+        LocalDate head = start.isAfter(budget.firstDay())
+                ? start
+                : budget.firstDay();
+
+        LocalDate tail = end.isBefore(budget.lastDay())
+                ? end
+                : budget.lastDay();
+
+        return DAYS.between(head, tail) + 1;
     }
 
     private int diffMonth(LocalDate start, LocalDate end) {
