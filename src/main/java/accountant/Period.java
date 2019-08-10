@@ -21,7 +21,7 @@ public class Period {
         return end;
     }
 
-    long overlappingDays(Period another) {
+    public long overlappingDays(Period another) {
 
         LocalDate head = getStart().isAfter(another.getStart())
                 ? getStart()
