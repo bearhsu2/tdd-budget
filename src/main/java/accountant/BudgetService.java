@@ -40,13 +40,6 @@ public class BudgetService {
 
         } else {
 
-            // first month
-            Optional<Budget> firstBudgetOpt = findBudget(start);
-            if (firstBudgetOpt.isPresent()) {
-                Budget budget = firstBudgetOpt.get();
-
-                total += budget.getOverlappingAmount(period);
-            }
 
 
             // last month
@@ -58,7 +51,7 @@ public class BudgetService {
             }
 
 
-            for (int i = 1; i < diffMonth; i++) {
+            for (int i = 0; i < diffMonth; i++) {
 
                 LocalDate middle = start.plusMonths(i);
 
