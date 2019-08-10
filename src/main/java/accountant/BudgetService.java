@@ -5,6 +5,7 @@ import accountant.vo.Budget;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 public class BudgetService {
     private BudgetRepo budgetRepo;
@@ -24,12 +25,16 @@ public class BudgetService {
         // find overlapping days
         // get daily amount * overlapping days
         if (start.isEqual(end)) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-            for (Budget budget : this.budgetRepo.getAll()) {
-                if (budget.getYearMonth().equals(start.format(formatter))) {
-                    return budget.getAmount() / start.lengthOfMonth();
-                }
+
+            Optional<Budget> budgetOpt = this.budgetRepo.getAll()
+                    .stream()
+                    .filter(budget -> budget.getYearMonth().equals(start.format(DateTimeFormatter.ofPattern("yyyyMM"))))
+                    .findFirst();
+
+            if (budgetOpt.isPresent()) {
+                return budgetOpt.get().getAmount() / start.lengthOfMonth();
             }
+
             return 0D;
         }
 
