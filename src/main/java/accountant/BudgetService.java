@@ -30,12 +30,11 @@ public class BudgetService {
             LocalDate middle = start.plusMonths(i);
 
             Optional<Budget> middleBudgetOpt = findBudget(middle);
-            if (middleBudgetOpt.isPresent()) {
-                Budget budget = middleBudgetOpt.get();
 
-                total += budget.getOverlappingAmount(period);
-            }
-
+            total+= middleBudgetOpt
+                    .map(budget -> budget.getOverlappingAmount(period))
+                    .orElse(0D);
+            
         }
 
 
