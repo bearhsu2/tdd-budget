@@ -36,4 +36,8 @@ public class Budget {
 
         return amount / lengthOfMonth();
     }
+
+    public LocalDate lastDay() {
+        return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("uuuuMM")).atEndOfMonth();
+    }
 }
