@@ -26,8 +26,8 @@ public class BudgetService {
         if (start.isEqual(end)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
             for (Budget budget : this.budgetRepo.getAll()) {
-                if (budget.getYearMonth().equals(current.format(formatter))) {
-                    return budget.getAmount() / current.lengthOfMonth();
+                if (budget.getYearMonth().equals(start.format(formatter))) {
+                    return budget.getAmount() / start.lengthOfMonth();
                 }
             }
             return 0D;
