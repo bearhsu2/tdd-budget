@@ -27,6 +27,7 @@ public class BudgetService {
         // find overlapping days
         // get daily amount * overlapping days
 
+        double total = 0D;
         int diffMonth = diffMonth(start, end);
         if (diffMonth == 0) {
 
@@ -43,15 +44,18 @@ public class BudgetService {
 
         } else {
             double firstMonthBudget = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
-            double lastMonthBudget = calculateBudgetAverage(end) * (end.getDayOfMonth());
+            total += firstMonthBudget;
 
-            double partialBudget = firstMonthBudget + lastMonthBudget;
+            double lastMonthBudget = calculateBudgetAverage(end) * (end.getDayOfMonth());
+            total += lastMonthBudget;
+
             for (int i = 1; i < diffMonth; i++) {
                 LocalDate middle = start.plusMonths(i);
-                partialBudget += calculateBudgetAverage(middle) * middle.lengthOfMonth();
+                total += calculateBudgetAverage(middle) * middle.lengthOfMonth();
             }
-            return partialBudget;
+
         }
+        return total;
 
     }
 
