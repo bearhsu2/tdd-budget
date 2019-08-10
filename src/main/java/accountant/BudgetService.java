@@ -55,8 +55,12 @@ public class BudgetService {
     private Optional<Budget> getBudget(LocalDate targetDate) {
         return this.budgetRepo.getAll()
                         .stream()
-                        .filter(budget -> budget.getYearMonth().equals(targetDate.format(DateTimeFormatter.ofPattern("yyyyMM"))))
+                        .filter(budget -> matches(targetDate, budget))
                         .findFirst();
+    }
+
+    private boolean matches(LocalDate targetDate, Budget budget) {
+        return budget.getYearMonth().equals(targetDate.format(DateTimeFormatter.ofPattern("yyyyMM")));
     }
 
     private double calculateBudgetAverage(LocalDate current) {
