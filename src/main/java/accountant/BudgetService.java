@@ -37,10 +37,8 @@ public class BudgetService {
                 double dailyAmount = budgetOpt.get().getDailyAmount();
                 long overlappingDays = overlappingDays(start, end);
 
-                return dailyAmount * overlappingDays;
-            } else {
-                return 0D;
-            }
+                total += dailyAmount * overlappingDays;
+            } 
 
         } else {
             double firstMonthBudget = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
