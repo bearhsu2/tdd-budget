@@ -40,4 +40,8 @@ public class Budget {
     public LocalDate lastDay() {
         return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("uuuuMM")).atEndOfMonth();
     }
+
+    public LocalDate firstDay() {
+        return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("uuuuMM")).atDay(1);
+    }
 }
