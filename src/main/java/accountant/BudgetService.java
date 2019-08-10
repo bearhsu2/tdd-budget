@@ -19,8 +19,18 @@ public class BudgetService {
             return 0;
         }
 
+        // find budget
+        // find budget daily amount
+        // find overlapping days
+        // get daily amount * overlapping days
         if (start.isEqual(end)) {
-            return calculateBudgetAverage(start);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+            for (Budget budget : this.budgetRepo.getAll()) {
+                if (budget.getYearMonth().equals(current.format(formatter))) {
+                    return budget.getAmount() / current.lengthOfMonth();
+                }
+            }
+            return 0D;
         }
 
         if (diffMonth(start, end) == 0) {
