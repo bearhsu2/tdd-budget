@@ -3,6 +3,7 @@
 
 .idea/
 target/
+*.iml
 
  User-specific stuff
 .idea/**/workspace.xml
